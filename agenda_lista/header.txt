@@ -1,0 +1,70 @@
+#ifndef HEADER_H
+#define HEADER_H
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<stdbool.h>
+
+#define M 100
+#define N 365
+#define O 12
+
+int id_unico = 1;
+
+typedef enum STATUS_COMPROMISSO {
+	A_SER_CUMPRIDO,
+	ADIVAVEL,
+	CANCELADO
+
+} STATUS_COMPROMISSO;
+
+typedef struct TDATA {
+	int dia, mes, ano;
+	int hora, minuto;
+} TDATA;
+
+typedef struct TCOMPROMISSO {
+	char nome_do_compromisso[M];
+	int identificador;
+	int tipo_compromisso;
+	bool adiavel;
+	TDATA data;
+	int duracao;
+	STATUS_COMPROMISSO status;
+	struct TCOMPROMISSO* prox_TCOMPROMISSO;
+} TCOMPROMISSO;
+
+typedef struct TAGENDA {
+	char nome_professor[M];
+	int ano;
+	int id_agenda;
+	TCOMPROMISSO* eventos;
+	struct TAGENDA* prox_TAGENDA;
+} TAGENDA;
+
+void criaAgenda(TAGENDA* agenda, int idProf, char* nome, int ano);
+int inicializa_compromisso(TCOMPROMISSO* comp, int tipo_compromisso, TDATA data, int duracao, char* nome);
+void insereCompromisso(TAGENDA* agenda, int tipo_compromisso, TDATA data, int duracao, char* nome);
+int showmenu();
+void removeCompromisso(TAGENDA* agenda, int id);
+void imprimeCompromisso(TCOMPROMISSO* comp);
+void imprimeAgenda(TAGENDA* agenda);
+int buscarAgenda(TAGENDA* Agenda,int id_agenda,int tipo_compromisso,TDATA data,int duracao,char* nome);
+void imprimeCompromissosAdiados(TAGENDA* agenda);
+void imprimeCompromissosCancelados(TAGENDA agenda);
+void imprimeCompromissosACumprir(TAGENDA agenda);
+int retornaNcompromissos(TAGENDA* agenda);
+int recuperaAgenda(TAGENDA *agenda, TDATA data);
+void altera_prioridade(TCOMPROMISSO* comp);
+void converte_duracao(int tempo_total, int* Duracao);
+int retorna_prioridade(TCOMPROMISSO* comp);
+void atribuiStatus(TCOMPROMISSO* comp, int novoStatus);
+int retornaStatus(TCOMPROMISSO* comp);
+bool Eadiavel(TCOMPROMISSO c, bool adiavel);
+char* tipo_de_compromisso_string(int tipo_compromisso);
+int temConflito(TCOMPROMISSO prim, TCOMPROMISSO novo);
+float converte_hora_dia_minuto(float duracao, int tipo_compromisso);
+void main();
+
+#endif
